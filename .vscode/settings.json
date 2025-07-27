@@ -13,5 +13,22 @@
   "i18n-ally.localesPaths": ["src/renderer/src/i18n", "src/renderer/src/i18n/locales"],
   "i18n-ally.enabledParsers": ["ts"],
   "i18n-ally.keystyle": "nested",
-  "i18n-ally.displayLanguage": "ja"
+  "i18n-ally.displayLanguage": "ja",
+ 
+  "terminal.integrated.profiles.windows": {
+    "Ubuntu (WSL)": {
+      "path": "C:\\WINDOWS\\System32\\wsl.exe",
+      "args": [
+        "-d",
+        "Ubuntu"
+      ]
+    }
+  },
+  "remote.WSL.fileWatcher.polling": true,
+  "remote.WSL.fileWatcher.pollingInterval": 5000,
+  "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/node_modules/**": true
+    }
+
 }

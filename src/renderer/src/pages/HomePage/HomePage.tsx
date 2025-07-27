@@ -1,5 +1,5 @@
 import Lottie from 'lottie-react'
-import robotAnimation from './Robot.json'
+import robotAnimation from './pink-shoes.json'
 import { Kbd } from 'flowbite-react'
 import { useTranslation } from 'react-i18next'
 import useSetting from '@renderer/hooks/useSetting'

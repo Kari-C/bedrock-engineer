@@ -6,7 +6,9 @@ import {
   SendMsgKey,
   ToolState,
   WindowConfig,
-  CameraConfig
+  CameraConfig,
+  TavilySearchConfig,
+  OrganizationConfig
 } from 'src/types/agent-chat'
 import { ToolName } from 'src/types/tools'
 
@@ -223,6 +225,10 @@ export interface SettingsContextType {
   getAgentFlows: (agentId: string) => FlowConfig[]
   updateAgentFlows: (agentId: string, flows: FlowConfig[]) => void
 
+  // エージェント固有のTavily検索設定
+  getAgentTavilySearchConfig: (agentId: string) => TavilySearchConfig
+  updateAgentTavilySearchConfig: (agentId: string, config: TavilySearchConfig) => void
+
   // エージェント設定の一括更新
   updateAgentSettings: (
     agentId: string,
@@ -252,6 +258,12 @@ export interface SettingsContextType {
   setTranslationEnabled: (enabled: boolean) => void
   translationTargetLanguage: string
   setTranslationTargetLanguage: (language: string) => void
+
+  // Organization Settings
+  organizations: OrganizationConfig[]
+  addOrganization: (org: OrganizationConfig) => void
+  updateOrganization: (org: OrganizationConfig) => void
+  removeOrganization: (orgId: string) => void
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined)
@@ -415,6 +427,9 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Translation Settings
   const [translationEnabled, setStateTranslationEnabled] = useState<boolean>(false)
   const [translationTargetLanguage, setStateTranslationTargetLanguage] = useState<string>('ja')
+
+  // Organization Settings
+  const [organizations, setOrganizations] = useState<OrganizationConfig[]>([])
 
   // Initialize all settings
   useEffect(() => {
@@ -686,6 +701,12 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (typeof storedTranslationLanguage === 'string') {
       setStateTranslationTargetLanguage(storedTranslationLanguage)
     }
+
+    // Load Organization Settings
+    const storedOrganizations = window.store.get('organizations') as OrganizationConfig[]
+    if (storedOrganizations) {
+      setOrganizations(storedOrganizations)
+    }
   }, [])
 
   useEffect(() => {
@@ -695,7 +716,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // MCPツールをロードする - 状態を更新せずツールのみを返すように修正
   const fetchMcpTools = useCallback(async (mcpServers?: McpServerConfig[]) => {
     try {
-      if (window.api?.mcp?.getToolSpecs) {
+      if (window.api?.mcp?.getToolSpecs && mcpServers && mcpServers.length > 0) {
         const fetchedTools = await window.api.mcp.getToolSpecs(mcpServers)
         // 取得したツールの生データを返す（状態管理は呼び出し側で行う）
         return fetchedTools || []
@@ -1567,6 +1588,38 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     [customAgents]
   )
 
+  // エージェント固有のTavily検索設定を取得する関数
+  const getAgentTavilySearchConfig = useCallback(
+    (agentId: string): TavilySearchConfig => {
+      // 現在選択されているエージェントを見つける
+      const agent = allAgents.find((a) => a.id === agentId)
+
+      // エージェント固有のTavily検索設定がある場合はそれを返す
+      // それ以外はデフォルト値を返す
+      return (
+        agent?.tavilySearchConfig || {
+          includeDomains: [],
+          excludeDomains: []
+        }
+      )
+    },
+    [allAgents]
+  )
+
+  // エージェントのTavily検索設定を更新する関数
+  const updateAgentTavilySearchConfig = useCallback(
+    (agentId: string, config: TavilySearchConfig) => {
+      // カスタムエージェントの場合のみ更新可能
+      const updatedAgents = customAgents.map((agent) =>
+        agent.id === agentId ? { ...agent, tavilySearchConfig: config } : agent
+      )
+
+      setCustomAgents(updatedAgents)
+      window.store.set('customAgents', updatedAgents)
+    },
+    [customAgents]
+  )
+
   // エージェント設定の一括更新関数
   const updateAgentSettings = useCallback(
     (
@@ -1663,6 +1716,36 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setStateTranslationTargetLanguage(language)
     ;(window.store as any).set('translationTargetLanguage', language)
   }, [])
+
+  // Organization management functions
+  const addOrganization = useCallback(
+    (org: OrganizationConfig) => {
+      const updatedOrganizations = [...organizations, org]
+      setOrganizations(updatedOrganizations)
+      ;(window.store as any).set('organizations', updatedOrganizations)
+    },
+    [organizations]
+  )
+
+  const updateOrganization = useCallback(
+    (org: OrganizationConfig) => {
+      const updatedOrganizations = organizations.map((existing) =>
+        existing.id === org.id ? org : existing
+      )
+      setOrganizations(updatedOrganizations)
+      ;(window.store as any).set('organizations', updatedOrganizations)
+    },
+    [organizations]
+  )
+
+  const removeOrganization = useCallback(
+    (orgId: string) => {
+      const updatedOrganizations = organizations.filter((org) => org.id !== orgId)
+      setOrganizations(updatedOrganizations)
+      ;(window.store as any).set('organizations', updatedOrganizations)
+    },
+    [organizations]
+  )
 
   const value = {
     // Advanced Settings
@@ -1807,6 +1890,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     updateAgentKnowledgeBases,
     getAgentFlows,
     updateAgentFlows,
+    getAgentTavilySearchConfig,
+    updateAgentTavilySearchConfig,
     updateAgentSettings,
 
     // Shell Settings
@@ -1825,7 +1910,13 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     translationEnabled,
     setTranslationEnabled,
     translationTargetLanguage,
-    setTranslationTargetLanguage
+    setTranslationTargetLanguage,
+
+    // Organization Settings
+    organizations,
+    addOrganization,
+    updateOrganization,
+    removeOrganization
   }
 
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>

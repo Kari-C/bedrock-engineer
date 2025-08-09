@@ -23,11 +23,11 @@ Bedrock Engineer はネイティブアプリです。アプリをダウンロー
 
 MacOS:
 
-[<img src="https://img.shields.io/badge/Download_FOR_MAC-Latest%20Release-blue?style=for-the-badge&logo=apple" alt="Download Latest Release" height="40">](https://github.com/aws-samples/bedrock-engineer/releases/latest/download/bedrock-engineer-1.16.4.pkg)
+[<img src="https://img.shields.io/badge/Download_FOR_MAC-Latest%20Release-blue?style=for-the-badge&logo=apple" alt="Download Latest Release" height="40">](https://github.com/aws-samples/bedrock-engineer/releases/latest/download/bedrock-engineer-1.17.0.pkg)
 
 Windows:
 
-[<img src="https://img.shields.io/badge/Download_FOR_WINDOWS-Latest%20Release-blue?style=for-the-badge" alt="Download Latest Release" height="40">](https://github.com/aws-samples/bedrock-engineer/releases/latest/download/bedrock-engineer-1.16.4-setup.exe)
+[<img src="https://img.shields.io/badge/Download_FOR_WINDOWS-Latest%20Release-blue?style=for-the-badge" alt="Download Latest Release" height="40">](https://github.com/aws-samples/bedrock-engineer/releases/latest/download/bedrock-engineer-1.17.0-setup.exe)
 
 MacOS に最適化されていますが、Windows, Linux OS でもビルドして使用できます。不具合がある場合、issue に起票ください。
 
@@ -52,7 +52,7 @@ PKGファイルを開く際に、以下のセキュリティ警告が表示さ�
 1. 「完了」をクリックして警告ダイアログを閉じます
 2. システム環境設定 → プライバシーとセキュリティを開きます
 3. セキュリティセクションまでスクロールします
-4. 「お使いのMacを保護するために "bedrock-engineer-1.16.4.pkg" がブロックされました」を見つけます
+4. 「お使いのMacを保護するために "bedrock-engineer-1.17.0.pkg" がブロックされました」を見つけます
 5. 「このまま開く」ボタンをクリックします
 
 このセキュリティ警告は、アプリケーションがMac App Store経由で配布されていないために表示されます。
@@ -190,6 +190,8 @@ npm run build:linux
 
 Model Context Protocol (MCP) クライアント統合により、Bedrock Engineerは外部のMCPサーバーに接続し、強力な外部ツールを動的にロードして使用することができるようになりました。この統合により、AIアシスタントがMCPサーバーが提供するツールにアクセスして利用できるようになり、その能力が拡張されます。
 
+MCPサーバーの設定方法の詳細については、[MCPサーバー設定ガイド](./docs/mcp-server/MCP_SERVER_CONFIGURATION-ja.md)を参照してください。
+
 ## Background Agent
 
 cron 式を使用して AI エージェントタスクを指定した間隔で自動実行します。Background Agent により、リアルタイム実行通知付きの継続的なワークフロー自動化が可能になります。
@@ -224,6 +226,15 @@ Agent Directoryは、優れたコントリビューターによって作成さ�
 2. **タグでフィルタリング** - タグをクリックしてカテゴリ、専門分野、機能によりエージェントをフィルタリング
 3. **詳細を表示** - 任意のエージェントを選択して、システムプロンプト全文、対応ツール、使用シナリオを確認
 4. **コレクションに追加** - 「マイエージェントに追加」をクリックして、個人コレクションにエージェントを追加
+
+### 組織共有
+
+AWS S3ストレージを使用して、チームや組織内でエージェントを共有できます。この機能により以下が可能になります：
+
+- **チームにおける共有** - 特定のチームや部門とカスタムエージェントを共有
+- **集中管理** - S3バケットを通じて組織固有のエージェントを管理
+
+詳細なセットアップ手順については、[組織共有ガイド](./docs/agent-directory-organization/README-ja.md)を参照してください。
 
 ### エージェントの追加方法
 

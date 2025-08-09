@@ -23,11 +23,11 @@ Bedrock Engineer is a native app, you can download the app or build the source c
 
 MacOS:
 
-[<img src="https://img.shields.io/badge/Download_FOR_MAC-Latest%20Release-blue?style=for-the-badge&logo=apple" alt="Download Latest Release" height="40">](https://github.com/aws-samples/bedrock-engineer/releases/latest/download/bedrock-engineer-1.16.4.pkg)
+[<img src="https://img.shields.io/badge/Download_FOR_MAC-Latest%20Release-blue?style=for-the-badge&logo=apple" alt="Download Latest Release" height="40">](https://github.com/aws-samples/bedrock-engineer/releases/latest/download/bedrock-engineer-1.17.0.pkg)
 
 Windows:
 
-[<img src="https://img.shields.io/badge/Download_FOR_WINDOWS-Latest%20Release-blue?style=for-the-badge" alt="Download Latest Release" height="40">](https://github.com/aws-samples/bedrock-engineer/releases/latest/download/bedrock-engineer-1.16.4-setup.exe)
+[<img src="https://img.shields.io/badge/Download_FOR_WINDOWS-Latest%20Release-blue?style=for-the-badge" alt="Download Latest Release" height="40">](https://github.com/aws-samples/bedrock-engineer/releases/latest/download/bedrock-engineer-1.17.0-setup.exe)
 
 It is optimized for MacOS, but can also be built and used on Windows and Linux OS. If you have any problems, please report an issue.
 
@@ -52,7 +52,7 @@ When opening the PKG file, you may see this security warning:
 1. Click "Done" to dismiss the warning dialog
 2. Open System Preferences → Privacy & Security
 3. Scroll down to the Security section
-4. Find "bedrock-engineer-1.16.4.pkg was blocked to protect your Mac"
+4. Find "bedrock-engineer-1.17.0.pkg was blocked to protect your Mac"
 5. Click "Open Anyway" button
 
 This security warning appears because the application is not distributed through the Mac App Store.
@@ -190,6 +190,8 @@ You can get up and running quickly with Amazon Bedrock Agents by using the [Agen
 
 Model Context Protocol (MCP) client integration allows Bedrock Engineer to connect to external MCP servers and dynamically load and use powerful external tools. This integration extends the capabilities of your AI assistant by allowing it to access and utilize the tools provided by the MCP server.
 
+For detailed information about MCP server configuration, see the [MCP Server Configuration Guide](./docs/mcp-server/MCP_SERVER_CONFIGURATION.md).
+
 ## Background Agent
 
 Schedule AI agent tasks to run automatically at specified intervals using cron expressions. Background Agent enables continuous workflow automation with real-time execution notifications.
@@ -224,6 +226,15 @@ The Agent Directory is a content hub where you can discover and immediately use 
 2. **Filter by Tags** - Click on tags to filter agents by categories, specialties, or capabilities
 3. **View Details** - Select any agent to view its complete system prompt, supported tools, and usage scenarios
 4. **Add to Your Collection** - Click "Add to My Agents" to add the agent to your personal collection
+
+### Organization Sharing
+
+Share agents within your team or organization using AWS S3 storage. This feature enables:
+
+- **Team Collaboration** - Share custom agents with specific teams or departments
+- **Centralized Management** - Manage organization-specific agents through S3 buckets
+
+For detailed setup instructions, see the [Organization Sharing Guide](./docs/agent-directory-organization/).
 
 ### Contribute Your Agents
 

@@ -225,6 +225,7 @@ export type CustomAgent = Agent & {
   isCustom?: boolean
   isShared?: boolean
   directoryOnly?: boolean // ディレクトリからのみ取得されたエージェント（テンプレート）
+  organizationId?: string // 組織ID（組織エージェントの場合）
   tools?: ToolName[] // エージェント固有のツール名リスト
   category?: AgentCategory // エージェントのカテゴリ
   allowedCommands?: CommandConfig[] // エージェント固有の許可コマンド
@@ -235,6 +236,7 @@ export type CustomAgent = Agent & {
   flows?: FlowConfig[] // エージェント固有のFlow設定
   mcpServers?: McpServerConfig[] // エージェント固有のMCPサーバー設定
   mcpTools?: ToolState[] // エージェント固有のMCPツール設定
+  tavilySearchConfig?: TavilySearchConfig // エージェント固有のTavily検索設定
   additionalInstruction?: string // エージェント生成時の追加指示
   environmentContextSettings?: EnvironmentContextSettings // エージェント固有の環境コンテキスト設定
 }
@@ -263,9 +265,19 @@ export type FlowConfig = {
 export interface McpServerConfig {
   name: string
   description: string
-  command: string
-  args: string[]
+  connectionType?: 'command' | 'url'
+  // コマンド形式用
+  command?: string
+  args?: string[]
   env?: Record<string, string>
+  // URL形式用
+  url?: string
+}
+
+// Tavily検索設定の型定義
+export interface TavilySearchConfig {
+  includeDomains: string[]
+  excludeDomains: string[]
 }
 
 // 環境コンテキスト設定の型定義
@@ -273,4 +285,16 @@ export interface EnvironmentContextSettings {
   todoListInstruction: boolean // TODO_LIST_INSTRUCTION を含めるかどうか
   projectRule: boolean // PROJECT_RULE を含めるかどうか
   visualExpressionRules: boolean // VISUAL_EXPRESSION_RULES を含めるかどうか
+}
+
+// 組織設定の型定義
+export interface OrganizationConfig {
+  id: string
+  name: string
+  description?: string
+  s3Config: {
+    bucket: string
+    prefix?: string // パス単位での分離
+    region: string
+  }
 }
